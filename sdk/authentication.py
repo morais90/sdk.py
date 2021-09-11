@@ -5,15 +5,22 @@ from .request import Request
 
 class Authentication:
     @abstractclassmethod
-    def authenticate(self, **kwargs) -> Request:
+    def authenticate(self, url: str) -> Request:
         raise NotImplementedError
 
 
 class APIKeyAuthentication(Authentication):
-    def __init__(self, api_key: str) -> None:
+    def __init__(
+        self,
+        api_key: str,
+        keyword: str = "Bearer",
+    ) -> None:
         super().__init__()
-        self.api_key = api_key
+        self._api_key = api_key
+        self._keyword = keyword
 
     def authenticate(self, url: str) -> Request:
-        request = Request(url, default_params={"api_key": self.api_key})
+        api_key = f"{self._keyword} {self._api_key}"
+        request = Request(url).headers({"Authorization": api_key})
+
         return request
