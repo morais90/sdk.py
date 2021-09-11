@@ -14,22 +14,22 @@ from .typing import Body, Header, QueryParams
 class Request:
     _safe_methods = [HTTPMethod.GET, HTTPMethod.HEAD]
 
-    def __init__(self, url: pydantic.HttpUrl = None) -> None:
+    def __init__(self, url: pydantic.HttpUrl) -> None:
         self._http = urllib3.PoolManager()
         self.url = url
         self._method: Optional[HTTPMethod] = None
+        self._body: Optional[Body] = None
         self._headers: Header = {}
         self._params: QueryParams = {}
-        self._body: Body = {}
 
     @property
     def method(self) -> Optional[HTTPMethod]:
         return self._method
 
     @method.setter
-    def set_method(self, method: HTTPMethod) -> None:
+    def method(self, method: HTTPMethod) -> None:
         if self._method:
-            raise ValueError("Method is already set to {self._method}")
+            raise ValueError(f"Method is already set to {self._method}")
 
         self._method = method
 
@@ -54,7 +54,9 @@ class Request:
     @chaining
     def get(self, params: QueryParams = None) -> "Request":
         self.method = HTTPMethod.GET
-        self._params.update(**params)
+
+        if params:
+            self._params.update(**params)
 
     @chaining
     def post(self, data: Body = None) -> "Request":
