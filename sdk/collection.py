@@ -1,0 +1,27 @@
+from typing import List
+
+from .endpoint import Endpoint
+
+
+class CollectionMeta(type):
+    def __new__(cls, name, bases, attrs):
+        new_class = super().__new__(cls, name, bases, attrs)
+
+        if not bases:
+            return new_class
+
+        new_class._endpoints = []
+
+        for key, attr in attrs.items():
+            if isinstance(attr, Endpoint):
+                attr.name = key if attr.name is None else attr.name
+                new_class._endpoints.append(attr)
+
+            setattr(new_class, key, attr)
+
+        return new_class
+
+
+class Collection(metaclass=CollectionMeta):
+    _endpoints: List[Endpoint]
+    collection_prefix: str
