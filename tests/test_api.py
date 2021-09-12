@@ -1,5 +1,5 @@
 import pytest
-from sdk import API, Collection, Endpoint, APIKeyAuthentication
+from sdk import API, APIKeyAuthentication, Collection, Endpoint
 
 
 class VoidAPI(API):
