@@ -95,10 +95,24 @@ def test_api_should_set_the_prefix_of_the_collections():
     assert api.videos.collection_prefix == "videos"
 
 
-def test_api_should_transpose_the_meta_to_collections_endpoints():
+def test_api_should_transpose_the_meta_to_the_collections_endpoints():
     api = FileAPI()
 
     assert api.images.info._meta == api._meta
     assert api.images.vote._meta == api._meta
     assert api.videos.watch._meta == api._meta
     assert api.videos.mark_as_viewed._meta == api._meta
+
+
+def test_api_should_not_overwrite_the_endpoints_alias_name():
+    class AliasAPI(API):
+        detail = Endpoint(name="")
+        nickname = Endpoint(name="my-nickname")
+
+        class Meta:
+            base_url = "https://alias.api"
+
+    api = AliasAPI()
+
+    assert api.detail.name == ""
+    assert api.nickname.name == "my-nickname"
