@@ -2,7 +2,8 @@ from typing import Optional, Union
 
 from .data import APIOptions
 from .enums import HTTPMethod
-from .response import FormResponse, JSONResponse, Request
+from .request import Request
+from .response import FormResponse, JSONResponse
 
 
 class Endpoint:
