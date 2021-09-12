@@ -1,3 +1,4 @@
+import dataclasses
 from typing import List
 
 from .collection import Collection
@@ -16,11 +17,35 @@ class APIMeta(type):
         new_class._endpoints = []
         meta = getattr(new_class, "Meta", None)
 
-        if meta:
-            authentication_class = getattr(meta, "authentication_class")
-            new_class._meta = APIOptions(
-                base_url=meta.base_url, authentication_class=authentication_class
+        if not meta:
+            raise AttributeError(
+                f"Meta configuration was not declared at the class {new_class.__name__}"
             )
+
+        if meta:
+            options = {}
+            missing_fields = []
+
+            for field in dataclasses.fields(APIOptions):
+                value = getattr(meta, field.name, None)
+                has_default_value = (
+                    field.default != dataclasses.MISSING
+                    or field.default_factory != dataclasses.MISSING
+                )
+
+                if not value and not has_default_value:
+                    missing_fields.append(field.name)
+
+                if value:
+                    options[field.name] = value
+
+            if missing_fields:
+                formatted_missing_fields = ", ".join(missing_fields)
+                raise AttributeError(
+                    f"The follow fields were not declared at the Meta: {formatted_missing_fields}"
+                )
+
+            new_class._meta = APIOptions(**options)
 
         for key, attr in attrs.items():
             if isinstance(attr, Collection):
