@@ -1,26 +1,19 @@
-from abc import abstractclassmethod
-
 from .request import Request
 
 
 class Authentication:
-    @abstractclassmethod
-    def authenticate(self, url: str) -> Request:
-        raise NotImplementedError
+    def authenticate(self, request: Request) -> Request:
+        return request
 
 
 class APIKeyAuthentication(Authentication):
-    def __init__(
-        self,
-        api_key: str,
-        keyword: str = "Bearer",
-    ) -> None:
+    _keyword: str = "Bearer"
+
+    def __init__(self, api_key: str) -> None:
         super().__init__()
         self._api_key = api_key
-        self._keyword = keyword
 
-    def authenticate(self, url: str) -> Request:
+    def authenticate(self, request: Request) -> Request:
         api_key = f"{self._keyword} {self._api_key}"
-        request = Request(url).headers({"Authorization": api_key})
 
-        return request
+        return request.headers({"Authorization": api_key})
