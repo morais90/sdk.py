@@ -1,5 +1,6 @@
 import dataclasses
 from typing import List
+from functools import partial
 
 from .collection import Collection
 from .data import APIOptions
@@ -22,30 +23,29 @@ class APIMeta(type):
                 f"Meta configuration was not declared at the class {new_class.__name__}"
             )
 
-        if meta:
-            options = {}
-            missing_fields = []
+        options = {}
+        missing_fields = []
 
-            for field in dataclasses.fields(APIOptions):
-                value = getattr(meta, field.name, None)
-                has_default_value = (
-                    field.default != dataclasses.MISSING
-                    or field.default_factory != dataclasses.MISSING
-                )
+        for field in dataclasses.fields(APIOptions):
+            value = getattr(meta, field.name, None)
+            has_default_value = (
+                field.default != dataclasses.MISSING
+                or field.default_factory != dataclasses.MISSING
+            )
 
-                if not value and not has_default_value:
-                    missing_fields.append(field.name)
+            if not value and not has_default_value:
+                missing_fields.append(field.name)
 
-                if value:
-                    options[field.name] = value
+            if value:
+                options[field.name] = value
 
-            if missing_fields:
-                formatted_missing_fields = ", ".join(missing_fields)
-                raise AttributeError(
-                    f"The follow fields were not declared at the Meta: {formatted_missing_fields}"
-                )
+        if missing_fields:
+            formatted_missing_fields = ", ".join(missing_fields)
+            raise AttributeError(
+                f"The follow fields were not declared at the Meta: {formatted_missing_fields}"
+            )
 
-            new_class._meta = APIOptions(**options)
+        new_class._meta = APIOptions(**options)
 
         for key, attr in attrs.items():
             if isinstance(attr, Collection):
@@ -71,9 +71,11 @@ class API(metaclass=APIMeta):
     _collections: List[Collection]
     _endpoints: List[Endpoint]
 
-    def __init__(self) -> None:
+    def __init__(self, **kwargs) -> None:
         endpoints = [endpoint for c in self._collections for endpoint in c._endpoints]
         endpoints.extend(self._endpoints)
+
+        self._meta.kwargs = kwargs
 
         for endpoint in endpoints:
             endpoint._meta = self._meta
