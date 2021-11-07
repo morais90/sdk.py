@@ -16,4 +16,4 @@ class APIKeyAuthentication(Authentication):
     def authenticate(self, request: Request) -> Request:
         api_key = f"{self._keyword} {self._api_key}"
 
-        return request.headers({"Authorization": api_key})
+        return request.headers(**{"Authorization": api_key})
