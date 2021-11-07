@@ -75,7 +75,7 @@ class API(metaclass=APIMeta):
         endpoints = [endpoint for c in self._collections for endpoint in c._endpoints]
         endpoints.extend(self._endpoints)
 
-        self._meta.kwargs = kwargs
+        self._meta.kwargs.update(**kwargs)
 
         for endpoint in endpoints:
             endpoint._meta = self._meta
