@@ -6,11 +6,10 @@ from .endpoint import Endpoint
 class CollectionMeta(type):
     def __new__(cls, name, bases, attrs):
         new_class = super().__new__(cls, name, bases, attrs)
+        new_class._endpoints = []
 
         if not bases:
             return new_class
-
-        new_class._endpoints = []
 
         for key, attr in attrs.items():
             if isinstance(attr, Endpoint):
@@ -25,3 +24,6 @@ class CollectionMeta(type):
 class Collection(metaclass=CollectionMeta):
     _endpoints: List[Endpoint]
     collection_prefix: str
+
+    def __init__(self) -> None:
+        self.collection_prefix = ""
