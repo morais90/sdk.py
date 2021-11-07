@@ -44,38 +44,40 @@ class Request:
         return url
 
     @chaining
-    def headers(self, headers: Header) -> "Request":
-        self._headers.update(**headers)
+    def headers(self, **kwargs: Header) -> "Request":
+        self._headers.update(**kwargs)
 
     @chaining
-    def params(self, params: QueryParams) -> "Request":
-        self._params.update(**params)
+    def params(self, **kwargs: QueryParams) -> "Request":
+        self._params.update(**kwargs)
 
     @chaining
-    def get(self, params: QueryParams = None) -> "Request":
+    def get(self, **kwargs: QueryParams) -> "Request":
         self.method = HTTPMethod.GET
-
-        if params:
-            self._params.update(**params)
+        self._params.update(**kwargs)
 
     @chaining
-    def post(self, data: Body = None) -> "Request":
+    def post(self, **kwargs: Body) -> "Request":
         self.method = HTTPMethod.POST
-        self._body = data
+        self._body = kwargs
 
     @chaining
-    def put(self, data: Body = None) -> "Request":
+    def put(self, **kwargs: Body) -> "Request":
         self.method = HTTPMethod.PUT
-        self._body = data
+        self._body = kwargs
 
     @chaining
-    def patch(self, data: Body = None) -> "Request":
+    def patch(self, **kwargs: Body) -> "Request":
         self.method = HTTPMethod.PATCH
-        self._body = data
+        self._body = kwargs
 
     @chaining
     def delete(self) -> "Request":
         self.method = HTTPMethod.DELETE
+
+    @chaining
+    def head(self) -> "Request":
+        self.method = HTTPMethod.HEAD
 
     def json(self) -> JSONResponse:
         if not self._method:
