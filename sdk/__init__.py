@@ -1,7 +1,7 @@
 from .api import API
-from .authentication import APIKeyAuthentication, Authentication
-from .collection import Collection
-from .endpoint import Endpoint, HTTPMethod
+from .authentications import APIKeyAuthentication, Authentication
+from .collections import Collection
+from .endpoints import Endpoint, HTTPMethod
 from .request import Request
 from .response import Response
 

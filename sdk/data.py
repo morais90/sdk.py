@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Any, Dict
 
-from .authentication import APIKeyAuthentication, Authentication
+from .authentications import APIKeyAuthentication, Authentication
 
 
 @dataclass(frozen=True)

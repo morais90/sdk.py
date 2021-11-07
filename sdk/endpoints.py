@@ -1,6 +1,6 @@
 from typing import Optional, Union
 
-from .authentication import Authentication
+from .authentications import Authentication
 from .data import APIOptions
 from .enums import HTTPMethod
 from .request import Request

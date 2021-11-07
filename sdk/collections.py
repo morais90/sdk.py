@@ -1,6 +1,6 @@
 from typing import List
 
-from .endpoint import Endpoint
+from .endpoints import Endpoint
 
 
 class CollectionMeta(type):

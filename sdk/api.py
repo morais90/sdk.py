@@ -1,10 +1,9 @@
 import dataclasses
 from typing import List
-from functools import partial
 
-from .collection import Collection
+from .collections import Collection
 from .data import APIOptions
-from .endpoint import Endpoint
+from .endpoints import Endpoint
 
 
 class APIMeta(type):
