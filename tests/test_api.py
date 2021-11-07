@@ -60,6 +60,12 @@ def test_api_should_verify_the_required_fields():
     assert str(exc.value) == "The follow fields were not declared at the Meta: base_url"
 
 
+def test_api_should_accept_and_save_the_kwargs():
+    api = UserAPI(name="John Doe")
+
+    assert api._meta.kwargs == {"name": "John Doe"}
+
+
 def test_api_should_accept_endpoints():
     api = UserAPI()
 
