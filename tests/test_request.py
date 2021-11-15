@@ -148,25 +148,3 @@ def test_request_should_check_for_the_method_on_return_the_json_request():
         "You need to set one HTTP method (get, post, put, patch, delete) beforehand"
         in str(exc.value)
     )
-
-
-def test_request_should_check_for_the_method_on_return_the_form_request():
-    url = "https://request.me"
-    request = Request(url)
-
-    with pytest.raises(ValueError) as exc:
-        request.form()
-
-    assert "You need to set one HTTP method (post, put, patch) beforehand" in str(
-        exc.value
-    )
-
-
-def test_request_form_request_with_invalid_http_method():
-    url = "https://request.me"
-    request = Request(url).head()
-
-    with pytest.raises(ValueError) as exc:
-        request.form()
-
-    assert "Method HEAD is not supported in form" in str(exc.value)

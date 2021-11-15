@@ -4,7 +4,7 @@ from .authentications import Authentication
 from .data import APIOptions
 from .enums import HTTPMethod
 from .request import Request
-from .response import FormResponse, JSONResponse
+from .response import JSONResponse
 
 
 class Endpoint:
@@ -45,7 +45,7 @@ class Endpoint:
 
         return request
 
-    def __call__(self, **kwargs) -> Union[JSONResponse, FormResponse]:
+    def __call__(self, **kwargs) -> JSONResponse:
         request = self._create_request()
         http_method = self.http_method.value.lower()
         method = getattr(request, http_method, None)

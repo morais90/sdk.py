@@ -7,7 +7,7 @@ from pydantic import HttpUrl, validate_arguments
 
 from .decorators import chaining
 from .enums import HTTPMethod
-from .response import FormResponse, JSONResponse
+from .response import JSONResponse
 from .typing import Body, Header, QueryParams
 
 
@@ -92,19 +92,6 @@ class Request:
         json_response = self._process_json_response(http_response)
         return json_response
 
-    def form(self) -> FormResponse:
-        if not self._method:
-            raise ValueError(
-                "You need to set one HTTP method (post, put, patch) beforehand"
-            )
-
-        if self.method in self._safe_methods:
-            raise ValueError(f"Method {self.method} is not supported in form")
-
-        http_response = self._form_request()
-        response = self._process_form_response(http_response)
-        return response
-
     def _json_request(self) -> urllib3.HTTPResponse:
         if self.method in self._safe_methods:
             http_response = self._http.request(
@@ -119,26 +106,10 @@ class Request:
 
         return http_response
 
-    def _form_request(self) -> urllib3.HTTPResponse:
-        http_response = self._http.request(
-            self._method, self.encoded_url, fields=self._body, headers=self._headers
-        )
-        return http_response
-
     def _process_json_response(
         self, http_response: urllib3.HTTPResponse
     ) -> JSONResponse:
         response = JSONResponse(
-            data=http_response.data,
-            status=http_response.status,
-            headers=http_response.headers,
-        )
-        return response
-
-    def _proces_form_response(
-        self, http_response: urllib3.HTTPResponse
-    ) -> FormResponse:
-        response = FormResponse(
             data=http_response.data,
             status=http_response.status,
             headers=http_response.headers,
