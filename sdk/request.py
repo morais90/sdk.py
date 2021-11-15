@@ -2,8 +2,8 @@ import json
 from typing import Optional
 from urllib.parse import urlencode
 
-import pydantic
 import urllib3
+from pydantic import HttpUrl, validate_arguments
 
 from .decorators import chaining
 from .enums import HTTPMethod
@@ -14,9 +14,10 @@ from .typing import Body, Header, QueryParams
 class Request:
     _safe_methods = [HTTPMethod.GET, HTTPMethod.HEAD]
 
-    def __init__(self, url: pydantic.HttpUrl) -> None:
-        self._http = urllib3.PoolManager()
+    @validate_arguments
+    def __init__(self, url: HttpUrl) -> None:
         self.url = url
+        self._http = urllib3.PoolManager()
         self._method: Optional[HTTPMethod] = None
         self._body: Optional[Body] = None
         self._headers: Header = {}
@@ -82,7 +83,7 @@ class Request:
     def json(self) -> JSONResponse:
         if not self._method:
             raise ValueError(
-                "You need to call one method (get, post, put, patch, delete)"
+                "You need to set one HTTP method (get, post, put, patch, delete) beforehand"
             )
 
         self._headers.update({"Content-Type": "application/json"})
@@ -93,7 +94,9 @@ class Request:
 
     def form(self) -> FormResponse:
         if not self._method:
-            raise ValueError("You need to call one method (post, put, patch)")
+            raise ValueError(
+                "You need to set one HTTP method (post, put, patch) beforehand"
+            )
 
         if self.method in self._safe_methods:
             raise ValueError(f"Method {self.method} is not supported in form")
@@ -109,7 +112,7 @@ class Request:
             )
 
         else:
-            data = json.loads(self._body) if self._body else None
+            data = json.dumps(self._body) if self._body else None
             http_response = self._http.request(
                 self._method, self.encoded_url, body=data, headers=self._headers
             )
