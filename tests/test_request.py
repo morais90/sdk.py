@@ -2,6 +2,7 @@ from unittest.mock import patch
 
 import pytest
 from pydantic import ValidationError
+
 from sdk import HTTPMethod, JSONResponse, Request
 
 

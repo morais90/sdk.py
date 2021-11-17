@@ -1,4 +1,5 @@
 import pytest
+
 from sdk import API, APIKeyAuthentication, Collection, Endpoint, HTTPMethod
 
 

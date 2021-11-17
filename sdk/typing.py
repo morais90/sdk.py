@@ -1,6 +1,5 @@
 from typing import Dict, List, Union
 
-
 Header = Dict[str, str]
 QueryParams = Dict[str, Union[str, List[str]]]
 
