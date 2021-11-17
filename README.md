@@ -9,10 +9,10 @@ from sdk import API, Collection, Endpoint, HTTPMethod
 
 class UserCollection(Collection):
     all = Endpoint(name="")
-    get = Endpoint()
+    get = Endpoint(name=":id")
     add = Endpoint(name="", http_method=HTTPMethod.POST)
-    update = Endpoint(http_method=HTTPMethod.PUT)
-    remove = Endpoint(http_method=HTTPMethod.DELETE)
+    update = Endpoint(name=":id", http_method=HTTPMethod.PUT)
+    remove = Endpoint(name=":id", http_method=HTTPMethod.DELETE)
 
 
 class ReqResAPI(API):
@@ -28,8 +28,6 @@ class ReqResAPI(API):
 ```
 
 ## :heavy_check_mark: What you're going to find in this library
-
----
 
 - [x] A high level interface to create your SDK client.
 - [ ] A layer of validation of inputs and outputs in client-side.
