@@ -144,7 +144,4 @@ def test_request_should_check_for_the_method_on_return_the_json_request():
     with pytest.raises(ValueError) as exc:
         request.json()
 
-    assert (
-        "You need to set one HTTP method (get, post, put, patch, delete) beforehand"
-        in str(exc.value)
-    )
+    assert "You need to set one HTTP method (get, post, put, patch, delete) beforehand" in str(exc.value)

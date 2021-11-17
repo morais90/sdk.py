@@ -200,6 +200,4 @@ def test_endpoint_should_authenticate_the_request_when_required():
     api = WeatherAPI(api_key="bdd5f7bd-6afa-487d-ad7e-430ce6bd9796")
     request = api.forecast.humidity()
 
-    assert request._headers == {
-        "Authorization": "Bearer bdd5f7bd-6afa-487d-ad7e-430ce6bd9796"
-    }
+    assert request._headers == {"Authorization": "Bearer bdd5f7bd-6afa-487d-ad7e-430ce6bd9796"}

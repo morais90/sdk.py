@@ -18,19 +18,14 @@ class APIMeta(type):
         meta = getattr(new_class, "Meta", None)
 
         if not meta:
-            raise AttributeError(
-                f"Meta configuration was not declared at the class {new_class.__name__}"
-            )
+            raise AttributeError(f"Meta configuration was not declared at the class {new_class.__name__}")
 
         options = {}
         missing_fields = []
 
         for field in dataclasses.fields(APIOptions):
             value = getattr(meta, field.name, None)
-            has_default_value = (
-                field.default != dataclasses.MISSING
-                or field.default_factory != dataclasses.MISSING
-            )
+            has_default_value = field.default != dataclasses.MISSING or field.default_factory != dataclasses.MISSING
 
             if not value and not has_default_value:
                 missing_fields.append(field.name)
@@ -40,9 +35,7 @@ class APIMeta(type):
 
         if missing_fields:
             formatted_missing_fields = ", ".join(missing_fields)
-            raise AttributeError(
-                f"The follow fields were not declared at the Meta: {formatted_missing_fields}"
-            )
+            raise AttributeError(f"The follow fields were not declared at the Meta: {formatted_missing_fields}")
 
         new_class._meta = APIOptions(**options)
 

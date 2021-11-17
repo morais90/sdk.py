@@ -82,9 +82,7 @@ class Request:
 
     def json(self) -> JSONResponse:
         if not self._method:
-            raise ValueError(
-                "You need to set one HTTP method (get, post, put, patch, delete) beforehand"
-            )
+            raise ValueError("You need to set one HTTP method (get, post, put, patch, delete) beforehand")
 
         self._headers.update({"Content-Type": "application/json"})
 
@@ -94,21 +92,15 @@ class Request:
 
     def _json_request(self) -> urllib3.HTTPResponse:
         if self.method in self._safe_methods:
-            http_response = self._http.request(
-                self._method, self.encoded_url, headers=self._headers
-            )
+            http_response = self._http.request(self._method, self.encoded_url, headers=self._headers)
 
         else:
             data = json.dumps(self._body) if self._body else None
-            http_response = self._http.request(
-                self._method, self.encoded_url, body=data, headers=self._headers
-            )
+            http_response = self._http.request(self._method, self.encoded_url, body=data, headers=self._headers)
 
         return http_response
 
-    def _process_json_response(
-        self, http_response: urllib3.HTTPResponse
-    ) -> JSONResponse:
+    def _process_json_response(self, http_response: urllib3.HTTPResponse) -> JSONResponse:
         response = JSONResponse(
             data=http_response.data,
             status=http_response.status,
