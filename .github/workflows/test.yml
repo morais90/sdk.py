@@ -42,6 +42,9 @@ jobs:
       - name: Lint with black
         run: poetry run black --check -v --diff .
 
+      - name: Lint with isort
+        run: poetry run isort --check --diff .
+
       - name: Test with pytest
         run: poetry run pytest -s -vv --cov=./ --cov-report=xml
 
