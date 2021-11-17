@@ -1,4 +1,4 @@
-name: Test
+name: Test and Linting
 
 on:
   pull_request:
@@ -38,6 +38,9 @@ jobs:
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install --no-interaction --no-root
+
+      - name: Lint with black
+        run: poetry run black --check -v --diff .
 
       - name: Test with pytest
         run: poetry run pytest -s -vv --cov=./ --cov-report=xml
