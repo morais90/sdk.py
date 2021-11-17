@@ -9,8 +9,8 @@ from sdk import API, Collection, Endpoint, HTTPMethod
 
 class UserCollection(Collection):
     all = Endpoint(name="")
-    get = Endpoint(name=":id")
     add = Endpoint(name="", http_method=HTTPMethod.POST)
+    get = Endpoint(name=":id")
     update = Endpoint(name=":id", http_method=HTTPMethod.PUT)
     remove = Endpoint(name=":id", http_method=HTTPMethod.DELETE)
 
