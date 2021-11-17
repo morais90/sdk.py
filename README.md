@@ -28,6 +28,7 @@ class ReqResAPI(API):
 ```
 
 [![Test](https://github.com/morais90/sdk.py/actions/workflows/test.yml/badge.svg)](https://github.com/morais90/sdk.py/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/morais90/sdk.py/branch/main/graph/badge.svg?token=G86NIVLGR7)](https://codecov.io/gh/morais90/sdk.py)
 
 ## :heavy_check_mark: What you're going to find in this library
 
