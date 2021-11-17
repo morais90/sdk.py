@@ -27,6 +27,8 @@ class ReqResAPI(API):
 {'id': '606', 'createdAt': '2021-11-17T13:50:01.397Z'}
 ```
 
+[![Test](https://github.com/morais90/sdk.py/actions/workflows/test.yml/badge.svg)](https://github.com/morais90/sdk.py/actions/workflows/test.yml)
+
 ## :heavy_check_mark: What you're going to find in this library
 
 - [x] A high level interface to create your SDK client.
