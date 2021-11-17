@@ -1,0 +1,21 @@
+name: Release
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.ADMIN_TOKEN }}
+          fetch-depth: 0
+
+      - name: Release
+        uses: relekang/python-semantic-release@master
+        with:
+          github_token: ${{ secrets.ADMIN_TOKEN }}
