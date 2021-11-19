@@ -1,0 +1,24 @@
+name: Publish
+
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+
+      - name: Build and Publish
+        run: poetry publish --build --username ${{ PYPI_USERNAME }} --password ${{ PYPI_PASSWORD }}
