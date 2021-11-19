@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="300" src="./assets/logo.png" alt="sdk.py logo">
+  <img width="300" src="https://raw.githubusercontent.com/morais90/sdk.py/main/assets/logo.png" alt="sdk.py logo">
 </p>
 
 **sdk.py** is a high-level library to help you create SDK interfaces for your API.
@@ -27,10 +27,10 @@ class ReqResAPI(API):
 {'id': '606', 'createdAt': '2021-11-17T13:50:01.397Z'}
 ```
 
-[![Test](https://github.com/morais90/sdk.py/actions/workflows/test.yml/badge.svg)](https://github.com/morais90/sdk.py/actions/workflows/test.yml)
+[![Test](https://github.com/morais90/sdk.py/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/morais90/sdk.py/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/morais90/sdk.py/branch/main/graph/badge.svg?token=G86NIVLGR7)](https://codecov.io/gh/morais90/sdk.py)
 
-## :heavy_check_mark: What you're going to find in this library
+## 🗂 What you're going to find in this library
 
 - [x] A high level interface to create your SDK client.
 - [ ] A layer of validation of inputs and outputs in client-side.
