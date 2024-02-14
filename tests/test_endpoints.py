@@ -86,7 +86,7 @@ def test_endpoint_make_a_request():
     api = WeatherAPI()
     request = api.history()
 
-    assert request.url == "https://weather.dev/history"
+    assert str(request.url) == "https://weather.dev/history"
     assert request.method == HTTPMethod.GET
     assert request._params == {}
     assert request._headers == {}
@@ -105,7 +105,7 @@ def test_endpoint_make_a_request_within_a_collection():
     api = WeatherAPI()
     request = api.forecast.by_city()
 
-    assert request.url == "https://weather.dev/forecast/by-city"
+    assert str(request.url) == "https://weather.dev/forecast/by-city"
     assert request.method == HTTPMethod.GET
     assert request._params == {}
     assert request._headers == {}
@@ -150,7 +150,7 @@ def test_endpoint_should_accept_a_resource_identification():
     api = WeatherAPI()
     request = api.forecast.by_zipcode(zipcode="5220125")
 
-    assert request.url == "https://weather.dev/forecast/5220125"
+    assert str(request.url) == "https://weather.dev/forecast/5220125"
 
 
 def test_endpoint_should_accept_multiple_resource_identifiers():
@@ -166,7 +166,7 @@ def test_endpoint_should_accept_multiple_resource_identifiers():
     api = WeatherAPI()
     request = api.forecast.by_city_and_region(city="chicago", region="north")
 
-    assert request.url == "https://weather.dev/forecast/chicago/north"
+    assert str(request.url) == "https://weather.dev/forecast/chicago/north"
 
 
 def test_endpoint_should_raise_an_exception_when_not_provide_the_required_uri():

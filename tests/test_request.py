@@ -1,25 +1,23 @@
 from unittest.mock import patch
 
 import pytest
-from pydantic import ValidationError
+from pydantic import ValidationError, AnyUrl
 
 from sdk import HTTPMethod, JSONResponse, Request
 
 
 def test_request_init():
-    url = "https://request.me"
+    url = "https://request.me/"
     request = Request(url)
 
-    assert request.url == url
+    assert str(request.url) == url
 
 
 def test_request_init_invalid_url():
     url = "websocket://request.me"
 
-    with pytest.raises(ValidationError) as exc:
+    with pytest.raises(ValidationError, match="URL scheme should be 'http' or 'https") as exc:
         Request(url)
-
-    assert "URL scheme not permitted" in str(exc.value)
 
 
 def test_request_should_set_the_GET_method():
@@ -100,7 +98,7 @@ def test_request_should_accept_headers():
 
 
 def test_request_should_handle_readonly_methods_on_json_request():
-    url = "https://request.me"
+    url = "https://request.me/"
     request = Request(url).get(foo="bar")
 
     with patch.object(request, "_http") as pool:
@@ -108,13 +106,13 @@ def test_request_should_handle_readonly_methods_on_json_request():
 
         pool.request.assert_called_with(
             HTTPMethod.GET,
-            "https://request.me?foo=bar",
+            "https://request.me/?foo=bar",
             headers={"Content-Type": "application/json"},
         )
 
 
 def test_request_should_handle_writeonly_methods_on_json_request():
-    url = "https://request.me"
+    url = "https://request.me/"
     request = Request(url).post(foo="bar")
 
     with patch.object(request, "_http") as pool:
@@ -122,7 +120,7 @@ def test_request_should_handle_writeonly_methods_on_json_request():
 
         pool.request.assert_called_with(
             HTTPMethod.POST,
-            "https://request.me",
+            AnyUrl("https://request.me/"),
             body='{"foo": "bar"}',
             headers={"Content-Type": "application/json"},
         )
@@ -139,7 +137,7 @@ def test_request_should_return_a_json_response_on_json_request():
 
 
 def test_request_should_check_for_the_method_on_return_the_json_request():
-    url = "https://request.me"
+    url = "https://request.me/"
     request = Request(url)
 
     with pytest.raises(ValueError) as exc:
