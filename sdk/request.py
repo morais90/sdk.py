@@ -3,7 +3,7 @@ from typing import Optional
 from urllib.parse import urlencode
 
 import urllib3
-from pydantic import HttpUrl, validate_arguments
+from pydantic import HttpUrl, validate_call
 
 from .decorators import chaining
 from .enums import HTTPMethod
@@ -14,7 +14,7 @@ from .typing import Body, Header, QueryParams
 class Request:
     _safe_methods = [HTTPMethod.GET, HTTPMethod.HEAD]
 
-    @validate_arguments
+    @validate_call
     def __init__(self, url: HttpUrl) -> None:
         self.url = url
         self._http = urllib3.PoolManager()
